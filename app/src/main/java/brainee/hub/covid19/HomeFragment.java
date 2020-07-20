@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONObject;
+
 
 public class HomeFragment extends Fragment {
 
@@ -89,6 +91,19 @@ public class HomeFragment extends Fragment {
     }
 
     private void handleJsonResponse(String response) {
+        try {
 
+            JSONObject jsonObject = new JSONObject(response);
+            JSONObject globalObject = new JSONObject("Global");
+            String newConfirmed = globalObject.getString("NewConfirmed");
+            String totalConfirmed = globalObject.getString("TotalConfirmed");
+            String newDeaths = globalObject.getString("NewDeaths");
+            String totalDeaths = globalObject.getString("TotalDeaths");
+            String newRecovered = globalObject.getString("NewRecovered");
+            String totalRecovered = globalObject.getString("TotalRecovered");
+
+        } catch (Exception e) {
+            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
