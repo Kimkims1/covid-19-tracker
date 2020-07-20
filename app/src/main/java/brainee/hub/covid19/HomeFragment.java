@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
 
     private Context context;
     private ProgressBar progress_bar;
-    private TextView totalCasesTv, newCasesTv, totaldeathsTv, newDeathsTv, totalRecoveredTv;
+    private TextView totalCasesTv, newCasesTv, totaldeathsTv, newDeathsTv, totalRecoveredTv, newRecoveredTv;
 
 
     public HomeFragment() {
@@ -62,8 +62,11 @@ public class HomeFragment extends Fragment {
         totaldeathsTv = view.findViewById(R.id.totaldeathsTv);
         newDeathsTv = view.findViewById(R.id.newDeathsTv);
         totalRecoveredTv = view.findViewById(R.id.totalRecoveredTv);
+        newRecoveredTv = view.findViewById(R.id.newRecoveredTv);
 
         progress_bar.setVisibility(View.INVISIBLE);
+
+        loadHomeData();
 
     }
 
@@ -82,7 +85,7 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 progress_bar.setVisibility(View.GONE);
-                Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -94,13 +97,22 @@ public class HomeFragment extends Fragment {
         try {
 
             JSONObject jsonObject = new JSONObject(response);
-            JSONObject globalObject = new JSONObject("Global");
+            JSONObject globalObject = jsonObject.getJSONObject("Global");
             String newConfirmed = globalObject.getString("NewConfirmed");
             String totalConfirmed = globalObject.getString("TotalConfirmed");
             String newDeaths = globalObject.getString("NewDeaths");
             String totalDeaths = globalObject.getString("TotalDeaths");
             String newRecovered = globalObject.getString("NewRecovered");
             String totalRecovered = globalObject.getString("TotalRecovered");
+
+            newCasesTv.setText(newConfirmed);
+            totalCasesTv.setText(totalConfirmed);
+            newDeathsTv.setText(newDeaths);
+            totaldeathsTv.setText(totalDeaths);
+            newRecoveredTv.setText(newRecovered);
+            totalRecoveredTv.setText(totalRecovered);
+
+            progress_bar.setVisibility(View.GONE);
 
         } catch (Exception e) {
             Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
